@@ -1,0 +1,29 @@
+{
+  "name": "MFPJsonStoreReactNative",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "16.8.3",
+    "react-native": "0.59.2",
+    "react-native-ibm-mobilefirst-jsonstore": "^8.0.2019102104",
+    "react-native-picker-select": "^6.3.4",
+    "react-native-really-awesome-button": "^1.6.0",
+    "react-native-table-component": "^1.2.1",
+    "react-native-wheel-picker-android": "^2.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "7.8.3",
+    "@babel/runtime": "7.8.3",
+    "babel-jest": "25.1.0",
+    "jest": "25.1.0",
+    "metro-react-native-babel-preset": "0.58.0",
+    "react-test-renderer": "16.8.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
