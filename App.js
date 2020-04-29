@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, { Component } from "react";
+import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,42 +19,42 @@ import {
   ActionSheetIOS,
   Image,
   ImageBackground,
-  SafeAreaView
-} from "react-native";
+  SafeAreaView,
+} from 'react-native';
 import {
   WLJSONStore,
   JSONStoreCollection,
   JSONStoreQueryPart,
   JSONStoreInitOptions,
   JSONStoreSyncPolicy,
-  JSONStoreAddOptions
-} from "react-native-ibm-mobilefirst-jsonstore";
+  JSONStoreAddOptions,
+} from 'react-native-ibm-mobilefirst-jsonstore';
 
-import AwesomeButton from "react-native-really-awesome-button";
+import AwesomeButton from 'react-native-really-awesome-button';
 
-import AwesomeButtonRick from "react-native-really-awesome-button/src/themes/rick";
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
 
-const SUCCESS = "SUCCESS";
-const FAILURE = "FAILURE";
+const SUCCESS = 'SUCCESS';
+const FAILURE = 'FAILURE';
 
 const BUTTONS_IOS_ACTIONSHEET_LABELS = [
-  "Initialize Collection",
-  "Add Document",
-  "Remove Document",
-  "Find Document",
-  "Count Document",
-  "Clear Collection",
-  "Remove Collection"
+  'Initialize Collection',
+  'Add Document',
+  'Remove Document',
+  'Find Document',
+  'Count Document',
+  'Clear Collection',
+  'Remove Collection',
 ];
 
 const BUTTONS_IOS_ACTIONSHEET_OPERATIONS = [
-  "initCollection",
-  "add",
-  "remove",
-  "find",
-  "count",
-  "clearCollection",
-  "removeCollection"
+  'initCollection',
+  'add',
+  'remove',
+  'find',
+  'count',
+  'clearCollection',
+  'removeCollection',
 ];
 
 export default class App extends Component {
@@ -63,20 +63,20 @@ export default class App extends Component {
     this.state = {
       operation: BUTTONS_IOS_ACTIONSHEET_OPERATIONS[0],
       addDataModel: {
-        name: "",
-        age: ""
+        name: '',
+        age: '',
       },
       removeDataModel: {
-        id: ""
+        id: '',
       },
       findQueryModel: {
-        query: ""
+        query: '',
       },
       countQueryModel: {
-        query: ""
+        query: '',
       },
-      result: "",
-      iosButtonTitle: BUTTONS_IOS_ACTIONSHEET_LABELS[0]
+      result: '',
+      iosButtonTitle: BUTTONS_IOS_ACTIONSHEET_LABELS[0],
     };
 
     // views
@@ -101,21 +101,21 @@ export default class App extends Component {
   }
 
   initialize() {
-    var collection = new JSONStoreCollection("people");
-    collection.setSearchField("name", "string");
-    collection.setSearchField("age", "number");
+    var collection = new JSONStoreCollection('people');
+    collection.setSearchField('name', 'string');
+    collection.setSearchField('age', 'number');
     var options = new JSONStoreInitOptions();
     options.setSyncOptions(
       JSONStoreSyncPolicy.SYNC_UPSTREAM,
-      "JSONStoreCloudantSync"
+      'JSONStoreCloudantSync',
     );
-    WLJSONStore.openCollections(["people"], options)
-        // WLJSONStore.openCollections(["people"])
+    WLJSONStore.openCollections(['people'], options)
+      // WLJSONStore.openCollections(["people"])
       .then(res => {
-        this.setState({ result: SUCCESS + "\n" + res });
+        this.setState({result: SUCCESS + '\n' + res});
       })
       .catch(err => {
-        this.setState({ result: FAILURE + "\n" + err });
+        this.setState({result: FAILURE + '\n' + err});
       });
   }
 
@@ -124,30 +124,30 @@ export default class App extends Component {
     var age = this.state.addDataModel.age.trim();
     if (name.length > 0 && age.length > 0) {
       if (isNaN(Number(age))) {
-        Alert.alert("Please enter a valid Age.");
+        Alert.alert('Please enter a valid Age.');
       }
       var data = {
         name: this.state.addDataModel.name.trim(),
-        age: Number(this.state.addDataModel.age.trim())
+        age: Number(this.state.addDataModel.age.trim()),
       };
       var options = new JSONStoreAddOptions(true);
-      var collection = new JSONStoreCollection("people");
+      var collection = new JSONStoreCollection('people');
       collection
         .addData(data, options)
         .then(res => {
           this.setState({
             result:
               SUCCESS +
-              "\nDocument " +
+              '\nDocument ' +
               JSON.stringify(data) +
-              " added successfully.",
-            addDataModel: { name: "", age: "" }
+              ' added successfully.',
+            addDataModel: {name: '', age: ''},
           });
         })
         .catch(err => {
           this.setState({
-            result: FAILURE + "\n" + err,
-            addDataModel: { name: "", age: "" }
+            result: FAILURE + '\n' + err,
+            addDataModel: {name: '', age: ''},
           });
         });
     }
@@ -156,46 +156,46 @@ export default class App extends Component {
   removeDocument() {
     if (this.state.removeDataModel.id.length > 0) {
       var id = Number(this.state.removeDataModel.id);
-      var collection = new JSONStoreCollection("people");
+      var collection = new JSONStoreCollection('people');
       collection
         .removeDocumentById(id)
         .then(res => {
           if (res == 1) {
             this.setState({
               result:
-                SUCCESS + "\nDocument with id " + id + " successully removed.",
-              removeDataModel: { id: "" }
+                SUCCESS + '\nDocument with id ' + id + ' successully removed.',
+              removeDataModel: {id: ''},
             });
           } else {
             this.setState({
-              result: SUCCESS + "\nDocument with id " + id + " doesn't exist.",
-              removeDataModel: { id: "" }
+              result: SUCCESS + '\nDocument with id ' + id + " doesn't exist.",
+              removeDataModel: {id: ''},
             });
           }
         })
         .catch(err => {
           this.setState({
-            result: FAILURE + "\n" + err,
-            removeDataModel: { id: "" }
+            result: FAILURE + '\n' + err,
+            removeDataModel: {id: ''},
           });
         });
     }
   }
 
   countDocuments() {
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     collection
       .countAllDocuments()
       .then(res => {
         this.setState({
-          result: SUCCESS + "\nTotal Count of Documents present: " + res,
-          countQueryModel: { query: "" }
+          result: SUCCESS + '\nTotal Count of Documents present: ' + res,
+          countQueryModel: {query: ''},
         });
       })
       .catch(err => {
         this.setState({
-          result: FAILURE + "\n" + err,
-          countQueryModel: { query: "" }
+          result: FAILURE + '\n' + err,
+          countQueryModel: {query: ''},
         });
       });
   }
@@ -203,12 +203,12 @@ export default class App extends Component {
   countDocumentsByName() {
     var name = this.state.countQueryModel.query.trim();
     if (name.length == 0) {
-      Alert.alert("Please enter a valid Name.");
+      Alert.alert('Please enter a valid Name.');
       return;
     }
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     var query = new JSONStoreQueryPart();
-    query.addLike("name", name);
+    query.addLike('name', name);
     collection
       .countDocuments([query])
       .then(res => {
@@ -217,15 +217,15 @@ export default class App extends Component {
             SUCCESS +
             '\nCount of Documents found with "name" containing: ' +
             name +
-            "\n is: " +
+            '\n is: ' +
             res,
-          countQueryModel: { query: "" }
+          countQueryModel: {query: ''},
         });
       })
       .catch(err => {
         this.setState({
-          result: FAILURE + "\n" + err,
-          countQueryModel: { query: "" }
+          result: FAILURE + '\n' + err,
+          countQueryModel: {query: ''},
         });
       });
   }
@@ -233,12 +233,12 @@ export default class App extends Component {
   countDocumentsByAge() {
     var age = this.state.countQueryModel.query.trim();
     if (age.length == 0 || isNaN(Number(age))) {
-      Alert.alert("Please enter a valid Age.");
+      Alert.alert('Please enter a valid Age.');
       return;
     }
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     var query = new JSONStoreQueryPart();
-    query.addEqual("age", Number(age));
+    query.addEqual('age', Number(age));
     collection
       .countDocuments([query])
       .then(res => {
@@ -247,33 +247,33 @@ export default class App extends Component {
             SUCCESS +
             '\nCount of Documents found with "age": ' +
             age +
-            "\n is: " +
+            '\n is: ' +
             res,
-          countQueryModel: { query: "" }
+          countQueryModel: {query: ''},
         });
       })
       .catch(err => {
         this.setState({
-          result: FAILURE + "\n" + err,
-          countQueryModel: { query: "" }
+          result: FAILURE + '\n' + err,
+          countQueryModel: {query: ''},
         });
       });
   }
 
   findDocuments() {
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     collection
       .findAllDocuments()
       .then(res => {
         this.setState({
-          result: SUCCESS + "\nAll Documents: " + "\n" + JSON.stringify(res),
-          findQueryModel: { query: "" }
+          result: SUCCESS + '\nAll Documents: ' + '\n' + JSON.stringify(res),
+          findQueryModel: {query: ''},
         });
       })
       .catch(err => {
         this.setState({
-          result: FAILURE + "\n" + err,
-          findQueryModel: { query: "" }
+          result: FAILURE + '\n' + err,
+          findQueryModel: {query: ''},
         });
       });
   }
@@ -281,12 +281,12 @@ export default class App extends Component {
   findDocumentsByAge() {
     var age = this.state.findQueryModel.query.trim();
     if (age.length == 0 || isNaN(Number(age))) {
-      Alert.alert("Please enter a valid Age.");
+      Alert.alert('Please enter a valid Age.');
       return;
     }
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     var query = new JSONStoreQueryPart();
-    query.addEqual("age", Number(age));
+    query.addEqual('age', Number(age));
     collection
       .findDocuments([query])
       .then(res => {
@@ -295,15 +295,15 @@ export default class App extends Component {
             SUCCESS +
             '\nDocuments found with "age": ' +
             age +
-            "\n" +
+            '\n' +
             JSON.stringify(res),
-          findQueryModel: { query: "" }
+          findQueryModel: {query: ''},
         });
       })
       .catch(err => {
         this.setState({
-          result: FAILURE + "\n" + err,
-          findQueryModel: { query: "" }
+          result: FAILURE + '\n' + err,
+          findQueryModel: {query: ''},
         });
       });
   }
@@ -311,12 +311,12 @@ export default class App extends Component {
   findDocumentsByName() {
     var name = this.state.findQueryModel.query.trim();
     if (name.length == 0) {
-      Alert.alert("Please enter a valid Name.");
+      Alert.alert('Please enter a valid Name.');
       return;
     }
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     var query = new JSONStoreQueryPart();
-    query.addLike("name", name);
+    query.addLike('name', name);
     collection
       .findDocuments([query])
       .then(res => {
@@ -325,15 +325,15 @@ export default class App extends Component {
             SUCCESS +
             '\nDocuments found with "name" containing: ' +
             name +
-            "\n" +
+            '\n' +
             JSON.stringify(res),
-          findQueryModel: { query: "" }
+          findQueryModel: {query: ''},
         });
       })
       .catch(err => {
         this.setState({
-          result: FAILURE + "\n" + err,
-          findQueryModel: { query: "" }
+          result: FAILURE + '\n' + err,
+          findQueryModel: {query: ''},
         });
       });
   }
@@ -341,92 +341,91 @@ export default class App extends Component {
   findDocumentById() {
     var id = this.state.findQueryModel.query.trim();
     if (id.length == 0 || isNaN(Number(id))) {
-      Alert.alert("Please enter a valid ID.");
+      Alert.alert('Please enter a valid ID.');
       return;
     }
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     collection
       .findDocumentById(Number(id))
       .then(res => {
-        if (res == "") {
+        if (res == '') {
           this.setState({
-            result: SUCCESS + "\nNo Document found with id: " + id,
-            findQueryModel: { query: "" }
+            result: SUCCESS + '\nNo Document found with id: ' + id,
+            findQueryModel: {query: ''},
           });
         } else {
           this.setState({
             result:
               SUCCESS +
-              "\nDocument found with id: " +
+              '\nDocument found with id: ' +
               id +
-              "\n" +
+              '\n' +
               JSON.stringify(res),
-            findQueryModel: { query: "" }
+            findQueryModel: {query: ''},
           });
         }
       })
       .catch(err => {
         this.setState({
-          result: FAILURE + "\n" + err,
-          findQueryModel: { query: "" }
+          result: FAILURE + '\n' + err,
+          findQueryModel: {query: ''},
         });
       });
   }
 
   clearCollection() {
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     collection
       .clearCollection()
       .then(res => {
-        this.setState({ result: SUCCESS + "\n" + res });
+        this.setState({result: SUCCESS + '\n' + res});
       })
       .catch(err => {
-        this.setState({ result: FAILURE + "\n" + err });
+        this.setState({result: FAILURE + '\n' + err});
       });
   }
 
   removeCollection() {
-    var collection = new JSONStoreCollection("people");
+    var collection = new JSONStoreCollection('people');
     collection
       .removeCollection()
       .then(res => {
-        this.setState({ result: SUCCESS + "\n" + res });
+        this.setState({result: SUCCESS + '\n' + res});
       })
       .catch(err => {
-        this.setState({ result: FAILURE + "\n" + err });
+        this.setState({result: FAILURE + '\n' + err});
       });
   }
 
   changePickerItem(itemValue) {
     this.setState({
       operation: itemValue,
-      result: ""
+      result: '',
     });
   }
 
   returnPickerView() {
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       return (
         <View
           style={{
-            borderStyle: "solid",
-            borderColor: "gray",
-            backgroundColor: "beige",
+            borderStyle: 'solid',
+            borderColor: 'gray',
+            backgroundColor: 'beige',
             borderWidth: 1,
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
-        >
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
           <Button
             onPress={this.showActionSheet}
             color="black"
             title={this.state.iosButtonTitle}
           />
           <Image
-            style={{ width: 20, height: 20, alignSelf: "center" }}
+            style={{width: 20, height: 20, alignSelf: 'center'}}
             source={{
               uri:
-                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADXSURBVGhD7c9NCsIwGIThgCt3LvROeiZBD+AZXOl96nHc6aR0QCSVtvn7IvPCEAJZ5HFKKaWUUqpo6+G02qT/bbEOO/c3e+2wB3bqbyNtMI94DbOGIYL/O2LBVtgd40NLmG/EEztgo1nEzEYwS5jFCGYBE41gNTHJEKwGJoTYY9GVxGRDsBKY7AiWE1MMwXJgiiNYSkw1BEuBqY5gMRgzCLYEYw7B5mDMItgUjHkE+4VpBsFCmAvWFIKFMM0hmMfcsKYR7BPTLIJ5zBVrGqGUUkoppf4i5962ta4MW9O7rQAAAABJRU5ErkJggg=="
+                'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADXSURBVGhD7c9NCsIwGIThgCt3LvROeiZBD+AZXOl96nHc6aR0QCSVtvn7IvPCEAJZ5HFKKaWUUqpo6+G02qT/bbEOO/c3e+2wB3bqbyNtMI94DbOGIYL/O2LBVtgd40NLmG/EEztgo1nEzEYwS5jFCGYBE41gNTHJEKwGJoTYY9GVxGRDsBKY7AiWE1MMwXJgiiNYSkw1BEuBqY5gMRgzCLYEYw7B5mDMItgUjHkE+4VpBsFCmAvWFIKFMM0hmMfcsKYR7BPTLIJ5zBVrGqGUUkoppf4i5962ta4MW9O7rQAAAABJRU5ErkJggg==',
             }}
           />
         </View>
@@ -435,11 +434,10 @@ export default class App extends Component {
       return (
         <Picker
           selectedValue={this.state.operation}
-          style={{ height: "10%", width: "100%" }}
+          style={{height: '10%', width: '100%'}}
           onValueChange={(itemValue, itemIndex) =>
             this.changePickerItem(itemValue)
-          }
-        >
+          }>
           <Picker.Item label="Initialize Collection" value="initCollection" />
           <Picker.Item label="Add Document" value="add" />
           <Picker.Item label="Remove Document" value="remove" />
@@ -455,33 +453,32 @@ export default class App extends Component {
   showActionSheet() {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: BUTTONS_IOS_ACTIONSHEET_LABELS
+        options: BUTTONS_IOS_ACTIONSHEET_LABELS,
       },
       buttonIndex => {
         this.setState({
           iosButtonTitle: BUTTONS_IOS_ACTIONSHEET_LABELS[buttonIndex],
-          operation: BUTTONS_IOS_ACTIONSHEET_OPERATIONS[buttonIndex]
+          operation: BUTTONS_IOS_ACTIONSHEET_OPERATIONS[buttonIndex],
         });
-      }
+      },
     );
   }
 
   returnOperationDetailView() {
     // initCollection, add, remove, find, count, clearCollection, removeCollection,
     switch (this.state.operation) {
-      case "initCollection":
+      case 'initCollection':
         return (
           <View
             style={{
               flex: 1,
-              alignItems: "center",
+              alignItems: 'center',
               // justifyContent: "center",
-              width: "100%",
-              padding: 10
-            }}
-          >
+              width: '100%',
+              padding: 10,
+            }}>
             {/* <Button
-              title="click to Initialize"
+              title="Click to Initialize"
               color="purple"
               onPress={this.initialize}
             /> */}
@@ -519,26 +516,24 @@ export default class App extends Component {
               onPress={next => {
                 this.initialize();
                 next();
-              }}
-            >
-              initialize
+              }}>
+              Initialize
             </AwesomeButtonRick>
           </View>
         );
-      case "add":
+      case 'add':
         return (
           <View
             style={{
               flex: 1,
-              width: "100%",
-              padding: 10
-            }}
-          >
+              width: '100%',
+              padding: 10,
+            }}>
             <TextInput
-              style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               onChangeText={text =>
                 this.setState({
-                  addDataModel: { name: text, age: this.state.addDataModel.age }
+                  addDataModel: {name: text, age: this.state.addDataModel.age},
                 })
               }
               value={this.state.addDataModel.name}
@@ -548,16 +543,16 @@ export default class App extends Component {
             <TextInput
               style={{
                 height: 40,
-                borderColor: "gray",
+                borderColor: 'gray',
                 borderWidth: 1,
-                marginVertical: 5
+                marginVertical: 5,
               }}
               onChangeText={text =>
                 this.setState({
                   addDataModel: {
                     age: text,
-                    name: this.state.addDataModel.name
-                  }
+                    name: this.state.addDataModel.name,
+                  },
                 })
               }
               value={this.state.addDataModel.age}
@@ -565,7 +560,7 @@ export default class App extends Component {
               textContentType="telephoneNumber"
             />
             {/* <Button
-              title="click to Add Document"
+              title="Click to Add Document"
               color="purple"
               onPress={this.addDocument}
             /> */}
@@ -575,32 +570,31 @@ export default class App extends Component {
                 onPress={next => {
                   this.addDocument();
                   next();
-                }}
-              >
-                click to Add Document
+                }}>
+                Click to Add Document
               </AwesomeButtonRick>
             </View>
           </View>
         );
-      case "remove":
+      case 'remove':
         return (
-          <View style={{ flex: 1, width: "100%", padding: 10 }}>
+          <View style={{flex: 1, width: '100%', padding: 10}}>
             <TextInput
               style={{
                 height: 40,
-                borderColor: "gray",
+                borderColor: 'gray',
                 borderWidth: 1,
-                marginVertical: 5
+                marginVertical: 5,
               }}
               onChangeText={text =>
-                this.setState({ removeDataModel: { id: text } })
+                this.setState({removeDataModel: {id: text}})
               }
               value={this.state.removeDataModel.id}
               placeholder="Enter Document id here"
               textContentType="telephoneNumber"
             />
             {/* <Button
-              title="click to Delete Document"
+              title="Click to Delete Document"
               color="purple"
               onPress={this.removeDocument}
             /> */}
@@ -611,45 +605,43 @@ export default class App extends Component {
                 onPress={next => {
                   this.removeDocument();
                   next();
-                }}
-              >
-                click to Delete Document
+                }}>
+                Click to Delete Document
               </AwesomeButtonRick>
             </View>
           </View>
         );
-      case "find":
+      case 'find':
         return (
-          <View style={{ flex: 1, width: "100%", padding: 10 }}>
+          <View style={{flex: 1, width: '100%', padding: 10}}>
             <TextInput
-              style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               onChangeText={text =>
-                this.setState({ findQueryModel: { query: text } })
+                this.setState({findQueryModel: {query: text}})
               }
               value={this.state.findQueryModel.query}
               placeholder="Enter query here"
             />
             <View
               style={{
-                height: 40,
-                flexDirection: "row",
-                alignContent: "center"
-              }}
-            >
-              <View style={{ margin: 5, width: "30%" }}>
+                height: 50,
+                flexDirection: 'row',
+                alignContent: 'center',
+              }}>
+              <View style={{margin: 5, width: '30%'}}>
                 <Button title="by ID" onPress={this.findDocumentById} />
               </View>
 
-              <View style={{ margin: 5, width: "31%" }}>
+              <View style={{margin: 5, width: '31%'}}>
                 <Button title="by Name" onPress={this.findDocumentsByName} />
               </View>
 
-              <View style={{ margin: 5, width: "31%" }}>
+              <View style={{margin: 5, width: '31%'}}>
                 <Button title="by Age" onPress={this.findDocumentsByAge} />
               </View>
             </View>
 
-            <View alignItems="center" style={{ margin: 5 }}>
+            <View alignItems="center" style={{margin: 5}}>
               {/* <Button
                 title="Find All Documents"
                 color="purple"
@@ -661,40 +653,38 @@ export default class App extends Component {
                 onPress={next => {
                   this.findDocuments();
                   next();
-                }}
-              >
+                }}>
                 Find All Documents
               </AwesomeButtonRick>
             </View>
           </View>
         );
-      case "count":
+      case 'count':
         return (
-          <View style={{ flex: 1, width: "100%", padding: 10 }}>
+          <View style={{flex: 1, width: '100%', padding: 10}}>
             <TextInput
-              style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               onChangeText={text =>
-                this.setState({ countQueryModel: { query: text } })
+                this.setState({countQueryModel: {query: text}})
               }
               value={this.state.countQueryModel.query}
               placeholder="Enter query here"
             />
             <View
               style={{
-                height: 40,
-                flexDirection: "row",
-                alignContent: "center"
-              }}
-            >
-              <View style={{ margin: 5, width: "48%" }}>
+                height: 50,
+                flexDirection: 'row',
+                alignContent: 'center',
+              }}>
+              <View style={{margin: 5, width: '48%'}}>
                 <Button title="by Name" onPress={this.countDocumentsByName} />
               </View>
 
-              <View style={{ margin: 5, width: "48%" }}>
+              <View style={{margin: 5, width: '48%'}}>
                 <Button title="by Age" onPress={this.countDocumentsByAge} />
               </View>
             </View>
-            <View alignItems="center" style={{ margin: 5 }}>
+            <View alignItems="center" style={{margin: 5}}>
               {/* <Button
                 title="get total Documents count"
                 color="purple"
@@ -705,25 +695,23 @@ export default class App extends Component {
                 onPress={next => {
                   this.countDocuments();
                   next();
-                }}
-              >
-                get total Documents count
+                }}>
+                Get total Documents count
               </AwesomeButtonRick>
             </View>
           </View>
         );
-      case "clearCollection":
+      case 'clearCollection':
         return (
           <View
             style={{
               flex: 1,
-              width: "100%",
+              width: '100%',
               padding: 10,
-              alignItems: "center"
-            }}
-          >
+              alignItems: 'center',
+            }}>
             {/* <Button
-              title="click to Clear Collection"
+              title="Click to Clear Collection"
               color="red"
               onPress={this.clearCollection}
             /> */}
@@ -736,24 +724,22 @@ export default class App extends Component {
               onPress={next => {
                 this.clearCollection();
                 next();
-              }}
-            >
-              click to Clear Collection
+              }}>
+              Click to Clear Collection
             </AwesomeButtonRick>
           </View>
         );
-      case "removeCollection":
+      case 'removeCollection':
         return (
           <View
             style={{
               flex: 1,
-              width: "100%",
+              width: '100%',
               padding: 10,
-              alignItems: "center"
-            }}
-          >
+              alignItems: 'center',
+            }}>
             {/* <Button
-              title="click to Remove Collection"
+              title="Click to Remove Collection"
               color="red"
               onPress={this.removeCollection}
             /> */}
@@ -764,9 +750,8 @@ export default class App extends Component {
               onPress={next => {
                 this.removeCollection();
                 next();
-              }}
-            >
-              click to Remove Collection
+              }}>
+              Click to Remove Collection
             </AwesomeButtonRick>
           </View>
         );
@@ -784,15 +769,14 @@ export default class App extends Component {
         <View style={styles.testResultsContainer}>
           <Text
             style={{
-              color: "black",
+              color: 'black',
               fontSize: 20,
-              textAlign: "center",
-              marginVertical: 5
-            }}
-          >
+              textAlign: 'center',
+              marginVertical: 5,
+            }}>
             RESULTS
           </Text>
-          <Text style={{ color: "black", fontSize: 16, margin: 10 }}>
+          <Text style={{color: 'black', fontSize: 16, margin: 10}}>
             {this.state.result}
           </Text>
         </View>
@@ -804,39 +788,39 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     paddingTop: 10,
-    backgroundColor: "#e1f5e6"
+    backgroundColor: '#e1f5e6',
   },
   testItemsContainer: {
-    height: "60%",
-    width: "100%"
+    height: '60%',
+    width: '100%',
   },
   testResultsContainer: {
     flex: 1,
-    height: "100%",
-    width: "100%",
-    backgroundColor: "#c7e8ba"
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#c7e8ba',
   },
   title: {
     fontSize: 20,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 30,
-    borderBottomColor: "gray",
+    borderBottomColor: 'gray',
     borderBottomWidth: 1,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   buttonStyle: {
-    width: "100%"
+    width: '100%',
   },
   buttonContainer: {
-    margin: 5
+    margin: 5,
   },
   button: {
     marginBottom: 10,
-    fontWeight: "500"
+    fontWeight: '500',
   },
   charan: {
-    alignItems: "center"
-  }
+    alignItems: 'center',
+  },
 });
